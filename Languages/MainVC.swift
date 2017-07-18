@@ -22,18 +22,24 @@ class MainVC: UIViewController, DataServiceDelegate {
         ds = DataService.instance
         ds.delegate = self
         ds.loadLanguageData()
+        ds.languageArray.shuffle()
         
         collectionView.delegate = self
         collectionView.dataSource = self
 
         headerView.addDropShadow()
         
-        let nib = UINib(nibName: "LanguageCell", bundle: nil)
-        collectionView.register(nib, forCellWithReuseIdentifier: "LanguageCell")
+        
+//        let nib = UINib(nibName: "LanguageCell", bundle: nil)
+//        collectionView.register(nib, forCellWithReuseIdentifier: "LanguageCell")
+        
+        // using protocol
+        collectionView.register(LanguageCell.self)
     }
     
     func languageDataLoaded() {
         print("Language Data Loaded")
+        collectionView.reloadData()
     }
 
 }
@@ -53,16 +59,25 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LanguageCell", for: indexPath) as? LanguageCell {
-            
-            cell.configureCell(language: ds.languageArray[indexPath.row])
-            return cell
-        }
-        return UICollectionViewCell()
+//        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LanguageCell", for: indexPath) as? LanguageCell {
+//            
+//            cell.configureCell(language: ds.languageArray[indexPath.row])
+//            return cell
+//        }
+//        return UICollectionViewCell()
+        
+        // using protocol
+        let cell = collectionView.dequeueReusableCell(forIndexaPath: indexPath) as LanguageCell
+        cell.configureCell(language: ds.languageArray[indexPath.row])
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        if let cell = collectionView.cellForItem(at: indexPath) as? LanguageCell {
+            
+            cell.shake()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

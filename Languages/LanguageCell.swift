@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LanguageCell: UICollectionViewCell, NibLoadableView {
+class LanguageCell: UICollectionViewCell, NibLoadableView, Shakeable {
 
     @IBOutlet weak var languageImage: UIImageView!
     @IBOutlet weak var languageLabel: UILabel!
